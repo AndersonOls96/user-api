@@ -5,6 +5,12 @@ exports.list = (req, res) =>{
     res.json(users)
 }
 
+exports.getById = (req, res) =>{
+    const user = User.findById(Number(req.params.id))
+    if (!user) return res.status(400).json({error: "User not found"})
+        res.json(user)
+}
+
 exports.create = (req, res) =>{
     const { name, email } = req.body
 
