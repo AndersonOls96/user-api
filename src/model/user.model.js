@@ -12,3 +12,15 @@ exports.create = (data) =>{
     users.push(user)
     return user
 }
+
+exports.update = (id, data) =>{
+    const index = users.findIndex(u => u.id === id)
+    if(index === -1) return null
+
+    users[index] ={
+        ...users[index],
+        ...data
+    }
+
+    return users[index]
+}

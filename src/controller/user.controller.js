@@ -21,3 +21,14 @@ exports.create = (req, res) =>{
     const user = User.create({ name, email })
     res.status(201).json(user)
 }
+
+exports.update = (req, res) =>{
+    const id = Number(req.params.id)
+    const { name, email } = req.body
+
+    const updated = User.update(id, { name, email })
+    if (!updated) return res.status(404).send('User not found')
+    
+    res.status(200).json(updated)
+}
+
