@@ -1,0 +1,48 @@
+<%- include('partials/header') %>
+
+<div class="container vh-100 d-flex flex-column justify-content-center align-items-center">
+
+  <h1 class="text-center my-4">Adicionar Usuário</h1>
+
+  <% if (success) { %>
+    <div class="alert alert-success w-50 text-center">
+      Usuário cadastrado com sucesso!
+    </div>
+  <% } %>
+
+  <% if (error) { %>
+    <div class="alert alert-danger w-50 text-center">
+      <%= error %>
+    </div>
+  <% } %>
+
+  <form action="/users" method="POST" class="w-50 border p-4 rounded">
+
+    <div class="mb-3">
+      <label for="name" class="form-label">Nome</label>
+      <input
+        type="text"
+        class="form-control"
+        id="name"
+        name="name"
+        value="<%= old?.name || '' %>"
+        required
+      >
+    </div>
+
+    <div class="mb-3">
+      <label for="email" class="form-label">Email</label>
+      <input
+        type="email"
+        class="form-control"
+        id="email"
+        name="email"
+        value="<%= old?.email || '' %>"
+        required
+      >
+    </div>
+
+    <button type="submit" class="btn btn-success">Salvar</button>
+  </form>
+
+</div>

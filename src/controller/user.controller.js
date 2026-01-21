@@ -2,7 +2,7 @@ const User = require('../model/user.model')
 
 exports.list = (req, res) =>{
     const users = User.findAll()
-    res.json(users)
+    res.render('listUsers', { users })
 }
 
 exports.getById = (req, res) =>{
@@ -11,16 +11,32 @@ exports.getById = (req, res) =>{
         res.json(user)
 }
 
-exports.create = (req, res) =>{
-    const { name, email } = req.body
+exports.create = async (req, res) => {
+  const { name, email } = req.body
 
-    if(!name || !email){
-        return res.status(400).json({error: 'Name and email required'})
-    }
+  if (!name || !email) {
+    return res.render('createView', {
+      error: 'Nome e email são obrigatórios',
+      success: null,
+      old: { name, email }
+    })
+  }
 
-    const user = User.create({ name, email })
-    res.status(201).json(user)
+  await User.create({ name, email })
+  res.redirect('/users/new?success=1')
 }
+
+
+
+exports.createView = (req, res) => {
+  res.render('createView', {
+    success: req.query.success,
+    error: null,
+    old: {}
+  })
+}
+
+
 
 exports.update = (req, res) =>{
     const id = Number(req.params.id)
