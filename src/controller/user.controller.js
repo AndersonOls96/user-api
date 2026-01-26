@@ -2,7 +2,7 @@ const User = require('../model/user.model')
 
 exports.list = (req, res) =>{
     const users = User.findAll()
-    res.json(users)
+    res.render('listUsers', {users})
 }
 
 exports.getById = (req, res) =>{
@@ -11,15 +11,27 @@ exports.getById = (req, res) =>{
         res.json(user)
 }
 
-exports.create = (req, res) =>{
+exports.create = async (req, res) =>{
     const { name, email } = req.body
 
     if(!name || !email){
-        return res.status(400).json({error: 'Name and email required'})
+        return res.render('createView',{
+            error: 'Name and email required',
+            success: null,
+            old: { name, email }
+        })
     }
 
-    const user = User.create({ name, email })
-    res.status(201).json(user)
+    await User.create({ name, email })
+    res.redirect('/users/new?success=1')
+}
+
+exports.createView = (req, res) =>{
+    res.render('createView', {
+        success: req.query.success,
+        error: null,
+        old: {}
+    })
 }
 
 exports.update = (req, res) =>{
@@ -29,7 +41,19 @@ exports.update = (req, res) =>{
     const updated = User.update(id, { name, email })
     if (!updated) return res.status(404).send('User not found')
     
-    res.status(200).json(updated)
+    res.redirect('/users')
+}
+
+exports.edit = (req, res) =>{
+    const { id } = req.params
+
+    const user = User.findById(Number(id))
+
+    if(!user){
+        return res.status(404).send("Usuário não encontrado")
+    }
+
+    res.render('edit', {user})
 }
 
 exports.remove = (req, res) =>{
@@ -39,6 +63,6 @@ exports.remove = (req, res) =>{
 
     if(!removed) return res.status(404).json({error: "User not found"})
 
-    res.status(204).json({message: "User removed with sucess"})
+    res.redirect('/users')
 }
 

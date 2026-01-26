@@ -1,0 +1,39 @@
+<%- include('partials/header') %>
+
+<div class="container">
+    <h1 class="my-4">Editar usuário</h1>
+
+    <form action="/users/<%= user.id %>?_method=PUT" method="POST">
+        <div class="mb-3">
+            <label for="form-label">Nome</label>
+            <input 
+                type="text" 
+                name="name" 
+                class="form-control"
+                value="<%= user.name %>"
+                required>
+        </div>
+
+        <div class="mb-3">
+            <label class="form-label">Email</label>
+            <input 
+                type="email" 
+                name="email" 
+                class="form-control"
+                value="<%= user.email %>"
+                required>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            Salvar
+        </button>
+
+        <a href="/users" class="btn btn-secondary ms-2">
+            Cancelar
+        </a>
+    </form>
+
+</div>
+
+
+<%- include('partials/footer') %>
